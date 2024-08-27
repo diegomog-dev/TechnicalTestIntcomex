@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Models
 {
-    public class Category_Attribute
+    public class Subcategory_Attribute
     {
-        public int Id_Category { get; set; }
-        public Category Category { get; set; }
+        public int Id_Subcategory { get; set; }
+        public Subcategory Subcategory { get; set; }
         public int Id_Attribute { get; set; }
         public Attribute Attribute { get; set; }
     }

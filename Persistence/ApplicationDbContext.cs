@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Persistence
         {
         }
 
-        public virtual DbSet<Domain.Attribute> Attributes { get; set; }
+        public virtual DbSet<Domain.Models.Attribute> Attributes { get; set; }
         public virtual DbSet<Attribute_Value> Attribute_Value { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Category_Attribute> Category_Attribute { get; set; }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Models
 {
     public class Attribute
     {
@@ -15,6 +15,6 @@ namespace Domain
 
         public ICollection<Attribute_Value> Value { get; set; }
         public ICollection<Category_Attribute> Attribute_Categories { get; set; }
-        public ICollection<Subcategory_Attribute> Attribute_Subcategories { get; set; }        
+        public ICollection<Subcategory_Attribute> Attribute_Subcategories { get; set; }
     }
 }
