@@ -11,6 +11,6 @@ namespace Domain.DTO
         public int sku { get; set; }
         public string mpn { get; set; }
         public string product_name { get; set; }
-        public List<AttributeDto> AttributesList { get; set; }
+        public List<CharacteristicDto> AttributesList { get; set; }
     }
 }

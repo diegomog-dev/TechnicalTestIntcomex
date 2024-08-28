@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTO
 {
-    public class AttributeDto
+    public class CharacteristicDto
     {
-        public string Attribute_Name { get; set; }
+        public string Characteristic_Name { get; set; }
         public string Value { get; set; }
     }
 }
