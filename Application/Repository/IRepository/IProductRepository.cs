@@ -10,6 +10,6 @@ namespace Application.Repository.IRepository
 {
     public interface IProductRepository : IRepository<Product>
     {
-        Task<List<ProductDto>> Search(string parameter, int count, int pageNumber);
+        Task<ProductDtoResponse> Search(string parameter, int count, int pageNumber);
     }
 }

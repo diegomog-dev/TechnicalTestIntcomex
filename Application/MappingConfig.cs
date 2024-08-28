@@ -13,8 +13,13 @@ namespace Application
     {
         public MappingConfig() 
         {
-            CreateMap<Product, ProductDto>().ReverseMap();
-            CreateMap<Attribute_Value, AttributeDto>().ReverseMap();
+            CreateMap<Product, ProductDto>()
+                .ForMember(dest => dest.AttributesList, opt => opt.MapFrom(src => src.Characteristics_Value))
+                .ReverseMap();
+            CreateMap<Characteristic_Value, CharacteristicDto>()
+                .ForMember(dest => dest.Characteristic_Name, opt => opt.MapFrom(src => src.Characteristic.Characteristic_Name))
+                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value))
+                .ReverseMap();
         }
     }
 }

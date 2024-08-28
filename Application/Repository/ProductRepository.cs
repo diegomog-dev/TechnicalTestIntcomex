@@ -24,33 +24,52 @@ namespace Application.Repository
             _mapper = mapper;
         }
 
-        public async Task<List<ProductDto>> Search(string parameter, int count, int pageNumber)
+        public async Task<ProductDtoResponse> Search(string parameter, int count, int pageNumber)
         {
             var paged = new Parameters
             {
                 PageNumber = pageNumber,
                 PageSize = count,
             };
-            var products = new List<Product>();
+            PagedList<Product> products = null;
+            List<ProductDto> listProducts = new List<ProductDto>();
+            MetaData metaData = null;
+
             try
             {
-                var categoryId = _context.Category.Where(c => EF.Functions.Like(c.Category_Name, $"%{parameter}%")).Select(c => (int)c.Id_Category).FirstOrDefault();
-                var subcategoryId = _context.Subcategory.Where(sc => EF.Functions.Like(sc.Subcategory_Name, $"%{parameter}%")).Select(sc => (int)sc.Id_Subcategory).FirstOrDefault();                
+                var categoryId = await _context.Category.Where(c => EF.Functions.Like(c.Category_Name, $"%{parameter}%"))
+                                                        .Select(c => (int)c.Id_Category)
+                                                        .FirstOrDefaultAsync();
+                var subcategoryId = await _context.Subcategory.Where(sc => EF.Functions.Like(sc.Subcategory_Name, $"%{parameter}%"))
+                                                              .Select(sc => (int)sc.Id_Subcategory)
+                                                              .FirstOrDefaultAsync();                
 
                 if(categoryId != 0)
                 {
-                    products = GetAllPaginate(paged, x => x.Product_Categories.Any(pc => pc.Id_Category == categoryId), includeProperties: "Attributes_Value.Attribute,Product_Categories.Category");
+                    products = GetAllPaginate(paged, x => x.Product_Categories.Any(pc => pc.Id_Category == categoryId),
+                        includeProperties: "Characteristics_Value.Characteristic,Product_Categories.Category");
+                    metaData = products.MetaData;
+                    listProducts = _mapper.Map<List<ProductDto>>(products);
+
                 }
-                if(subcategoryId != 0)
+                else if(subcategoryId != 0)
                 {
-                    products = GetAllPaginate(paged, x => x.Product_Subcategories.Any(pc => pc.Id_Subcategory == subcategoryId), includeProperties: "Attributes_Value.Attribute,Product_Subcategories.Subcategory");
-                }
-                return _mapper.Map<List<ProductDto>>(products);
+                    products = GetAllPaginate(paged, x => x.Product_Subcategories.Any(pc => pc.Id_Subcategory == subcategoryId),
+                        includeProperties: "Characteristics_Value.Characteristic,Product_Subcategories.Subcategory");
+                    metaData = products.MetaData;
+                    listProducts = _mapper.Map<List<ProductDto>>(products);
+                }               
+
+                return new ProductDtoResponse
+                {
+                    Products = listProducts,
+                    MetaData = metaData
+                };
+
             }
             catch (Exception ex)
             {
-
-                throw;
+                throw new Exception("Error al buscar productos", ex);
             }
         }
     }
