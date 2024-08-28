@@ -2,6 +2,7 @@
 using Application;
 using Application.Repository;
 using Application.Repository.IRepository;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -27,10 +28,19 @@ namespace WebApi
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+            builder.Services.AddControllers(opt =>
+            {
+                opt.CacheProfiles.Add("Default30",
+                    new CacheProfile()
+                    {
+                        Duration = 30
+                    });
+            }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
+
+            builder.Services.AddResponseCaching();
 
             var app = builder.Build();
 

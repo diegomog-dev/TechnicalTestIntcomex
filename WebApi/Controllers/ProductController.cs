@@ -9,6 +9,7 @@ using System.Net;
 namespace WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
+    [ResponseCache(CacheProfileName = "Default30")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -27,7 +28,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetProducts(string parameter, int count, int numberPage)
+        public async Task<ActionResult<APIResponse>> GetSearchProducts(string parameter, int count, int numberPage)
         {
             try
             {
@@ -39,7 +40,9 @@ namespace WebApi.Controllers
                 }
 
                 var productList = await _productRepository.Search(parameter,count, numberPage);
-                if(productList.Count() == 0)
+                int totalPages = productList.MetaData.TotalPages;
+
+                if(productList.Products.Count() == 0)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
                     _response.IsSuccess = false;
@@ -50,6 +53,27 @@ namespace WebApi.Controllers
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+            }
+
+            return _response;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> GetProducts()
+        {
+            try
+            {
+                IEnumerable<Product> products = await _productRepository.GetAll();
+                _response.Result = products;
+                _response.StatusCode = HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
