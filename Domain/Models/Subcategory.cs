@@ -18,6 +18,6 @@ namespace Domain.Models
         public Category Category { get; set; }
 
         public ICollection<Product_Subcategory> Subcategory_Products { get; set; }
-        public ICollection<Subcategory_Attribute> Subcategory_Attributes { get; set; }
+        public ICollection<Subcategory_Characteristic> Subcategory_Characteristics { get; set; }
     }
 }

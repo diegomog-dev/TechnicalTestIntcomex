@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Attribute_Value
+    public class Characteristic_Value
     {
         [Key]
         public int Id { get; set; }
         [ForeignKey("Product")]
         public int Id_Product { get; set; }
         public Product Product { get; set; }
-        [ForeignKey("Attribute")]
-        public int Id_Attribute { get; set; }
-        public Attribute Attribute { get; set; }
+        [ForeignKey("Characteristic")]
+        public int Id_Characteristic { get; set; }
+        public Characteristics Characteristic { get; set; }
         public string Value { get; set; }
     }
 }

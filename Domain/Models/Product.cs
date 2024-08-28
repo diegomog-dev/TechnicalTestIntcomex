@@ -15,7 +15,7 @@ namespace Domain.Models
         public string mpn { get; set; }
         public string product_name { get; set; }
 
-        public ICollection<Attribute_Value> Attributes_Value { get; set; }
+        public ICollection<Characteristic_Value> Characteristics_Value { get; set; }
         public ICollection<Product_Category> Product_Categories { get; set; }
         public ICollection<Product_Subcategory> Product_Subcategories { get; set; }
     }
