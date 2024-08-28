@@ -1,4 +1,8 @@
 
+using Application;
+using Application.Repository;
+using Application.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -19,6 +23,14 @@ namespace WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<ApplicationDbContext>(opt => opt.UseMySQL(connectionString));
+            builder.Services.AddAutoMapper(typeof(MappingConfig));
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
 
             var app = builder.Build();
 
