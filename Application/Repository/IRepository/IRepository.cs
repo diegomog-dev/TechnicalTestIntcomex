@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Specifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,6 +12,7 @@ namespace Application.Repository.IRepository
     {
         Task Create (T entity);
         Task<List<T>> GetAll (Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
+        PagedList<T> GetAllPaginate(Parameters parameters, Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
         Task<T> Get(Expression<Func<T, bool>>? filter = null,bool tracked = true, string? includeProperties = null);
         Task Remove(T entity);
         Task Save();

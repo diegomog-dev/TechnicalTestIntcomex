@@ -1,4 +1,5 @@
 ﻿using Application.Repository.IRepository;
+using Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
@@ -67,6 +68,25 @@ namespace Application.Repository
             }
 
             return await query.ToListAsync();
+        }
+
+        public PagedList<T> GetAllPaginate(Parameters parameters, Expression<Func<T, bool>> filter = null, string includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            return PagedList<T>.ToPagedList(query, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task Remove(T entity)
