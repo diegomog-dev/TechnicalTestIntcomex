@@ -40,7 +40,6 @@ namespace WebApi.Controllers
                 }
 
                 var productList = await _productRepository.Search(parameter,count, numberPage);
-                int totalPages = productList.MetaData.TotalPages;
 
                 if(productList.Products.Count() == 0)
                 {
