@@ -13,13 +13,11 @@ namespace WebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IProductRepository _productRepository;
         protected APIResponse _response;
 
-        public ProductController(ApplicationDbContext context, IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository)
         {
-            _context = context;
             _response = new();
             _productRepository = productRepository;
         }

@@ -26,6 +26,8 @@ namespace WebApi
             builder.Services.AddDbContext<ApplicationDbContext>(opt => opt.UseMySQL(connectionString));
             builder.Services.AddAutoMapper(typeof(MappingConfig));
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             builder.Services.AddControllers(opt =>
